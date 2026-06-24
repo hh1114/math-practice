@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>📐 长方体和正方体 · 无限分组练习（含学号与后台）</title>
+    <style>
+        /* ===== 全局重置 & 基础 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', Roboto, system-ui, sans-serif;
+            background: #f0f7ff;
+            color: #1a2a3a;
+            padding: 20px 16px 40px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(145deg, #ffffff, #f9fcff);
+            border-radius: 28px;
+            padding: 24px 28px 20px;
+            box-shadow: 0 8px 24px rgba(26, 67, 113, 0.08);
+            margin-bottom: 28px;
+            border: 1px solid rgba(66, 133, 244, 0.10);
+        }
+        .header-top {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #0b2a4a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header h1 span {
+            background: #2b7be4;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 2px 16px;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+        }
+        .student-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            background: #eef5fe;
+            padding: 6px 16px 6px 14px;
+            border-radius: 40px;
+            border: 1px solid rgba(43, 123, 228, 0.15);
+        }
+        .student-area .label {
+            font-weight: 500;
+            color: #1a3c5e;
+        }
+        .student-area .id-display {
+            font-weight: 700;
+            color: #1a5bbf;
+            font-size: 18px;
+        }
+        .student-area button {
+            background: transparent;
+            border: 1px solid #b6d0ea;
+            border-radius: 30px;
+            padding: 4px 14px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #1a5bbf;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .student-area button:hover {
+            background: #1a5bbf;
+            color: #fff;
+            border-color: #1a5bbf;
+        }
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 18px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #1e3c5a;
+        }
+        .stats .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #eef5fe;
+            padding: 6px 16px 6px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(43, 123, 228, 0.12);
+        }
+        .stats .stat-item .num {
+            font-weight: 700;
+            color: #1a5bbf;
+            font-size: 18px;
+            min-width: 22px;
+            text-align: center;
+        }
+        .stats .stat-item .num.green { color: #0f9d58; }
+        .stats .stat-item .num.orange { color: #e3742a; }
+        .stats .stat-item .num.purple { color: #7c3aed; }
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            margin-bottom: 28px;
+            background: #ffffffd9;
+            padding: 10px 18px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 16px rgba(0,20,40,0.04);
+            border: 1px solid #e9f0f9;
+        }
+        .tab-btn {
+            border: none;
+            background: transparent;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #4a6a8a;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        .tab-btn:hover { background: #e9f2fe; color: #1a5bbf; }
+        .tab-btn.active {
+            background: #1a5bbf;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(26,91,191,0.25);
+            border-color: #1a5bbf;
+        }
+        .tab-btn .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            border-radius: 20px;
+            padding: 0 10px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-left: 6px;
+        }
+        .tab-btn.active .badge { background: rgba(255,255,255,0.25); }
+        .group-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            background: #ffffffb0;
+            padding: 12px 20px;
+            border-radius: 40px;
+            border: 1px solid #e0ebf7;
+        }
+        .group-info .label {
+            font-weight: 600;
+            color: #1a3c5e;
+            font-size: 17px;
+        }
+        .group-info .label span {
+            color: #1a5bbf;
+            font-size: 22px;
+            margin: 0 4px;
+        }
+        .btn-next {
+            background: #2b7be4;
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 8px 28px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(43,123,228,0.25);
+        }
+        .btn-next:hover { background: #1a5bbf; transform: translateY(-1px); }
+        .btn-next:active { transform: translateY(0); }
+        .question-list { display: flex; flex-direction: column; gap: 24px; }
+
+        /* ===== 组结果横幅 ===== */
+        #groupResult {
+            display: none;
+            margin-bottom: 24px;
+            padding: 18px 24px;
+            border-radius: 18px;
+            background: #fef9e7;
+            border-left: 6px solid #f5b042;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            animation: fadeSlide 0.4s ease;
+        }
+        #groupResult .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        #groupResult .result-row .title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a3c5e;
+        }
+        #groupResult .result-row .rate {
+            font-weight: 700;
+            font-size: 24px;
+            color: #1a5bbf;
+            background: #ffffffc0;
+            padding: 2px 18px;
+            border-radius: 40px;
+            border: 1px solid #f5d37a;
+        }
+        #groupResult .comment {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #1a3c5e;
+            background: #ffffffb0;
+            padding: 8px 16px;
+            border-radius: 12px;
+            border-left: 4px solid #f5b042;
+        }
+        #groupResult .comment .emoji { font-size: 20px; margin-right: 6px; }
+
+        /* ===== 题目卡片 ===== */
+        .q-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 24px 28px 28px;
+            box-shadow: 0 4px 20px rgba(26,67,113,0.06);
+            border: 1px solid #e9f0f9;
+            transition: border-color 0.25s;
+        }
+        .q-card:hover { border-color: #cddef5; }
+        .q-card.correct { border-left: 6px solid #0f9d58; background: #fafffe; }
+        .q-card.wrong { border-left: 6px solid #d93025; background: #fffafa; }
+        .q-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px 16px;
+            margin-bottom: 14px;
+        }
+        .q-number {
+            font-weight: 700;
+            font-size: 18px;
+            color: #1a3c5e;
+            background: #eef5fe;
+            padding: 0 14px;
+            border-radius: 30px;
+            line-height: 34px;
+        }
+        .q-difficulty {
+            font-size: 13px;
+            font-weight: 600;
+            padding: 2px 16px;
+            border-radius: 30px;
+            letter-spacing: 0.5px;
+        }
+        .q-difficulty.base { background: #d4e8ff; color: #1a5bbf; }
+        .q-difficulty.medium { background: #fde8c8; color: #b45b1a; }
+        .q-difficulty.hard { background: #fcd6d6; color: #b31b1b; }
+        .q-status {
+            margin-left: auto;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6a8aaa;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .q-body {
+            font-size: 16.5px;
+            line-height: 1.7;
+            color: #1a2a3a;
+        }
+        .q-body .math { font-family: 'Times New Roman', serif; font-style: italic; }
+        .q-body .highlight { background: #fef6d9; padding: 0 4px; border-radius: 4px; font-weight: 600; }
+        .q-controls {
+            margin-top: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 16px 20px;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+        }
+        .options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 6px 14px 6px 10px;
+            border-radius: 30px;
+            background: #f5f9ff;
+            border: 1px solid transparent;
+            transition: all 0.15s;
+        }
+        .options label:hover { background: #e9f2fe; border-color: #b6d0ea; }
+        .options input[type="radio"] {
+            width: 18px; height: 18px;
+            accent-color: #1a5bbf;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .fill-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .fill-input input[type="text"] {
+            width: 120px;
+            padding: 8px 14px;
+            border: 2px solid #d6e4f2;
+            border-radius: 30px;
+            font-size: 17px;
+            font-weight: 500;
+            text-align: center;
+            background: #fafdff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .fill-input input[type="text"]:focus {
+            border-color: #1a5bbf;
+            box-shadow: 0 0 0 4px rgba(26,91,191,0.08);
+        }
+        .fill-input .unit {
+            font-size: 15px;
+            color: #4a6a8a;
+            font-weight: 500;
+        }
+        .essay-inputs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px 30px;
+        }
+        .essay-inputs .pair {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .essay-inputs .pair label {
+            font-weight: 500;
+            color: #1a3c5e;
+            font-size: 15px;
+        }
+        .essay-inputs .pair input[type="text"] {
+            width: 100px;
+            padding: 8px 14px;
+            border: 2px solid #d6e4f2;
+            border-radius: 30px;
+            font-size: 17px;
+            font-weight: 500;
+            text-align: center;
+            background: #fafdff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .essay-inputs .pair input[type="text"]:focus {
+            border-color: #1a5bbf;
+            box-shadow: 0 0 0 4px rgba(26,91,191,0.08);
+        }
+        .essay-inputs .pair .unit {
+            font-size: 14px;
+            color: #4a6a8a;
+            font-weight: 500;
+        }
+        .btn-submit {
+            background: #1a5bbf;
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 10px 32px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(26,91,191,0.20);
+            border: 1px solid #1a5bbf;
+            white-space: nowrap;
+        }
+        .btn-submit:hover { background: #134ca8; transform: translateY(-1px); }
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            background: #8aacd0;
+            border-color: #8aacd0;
+        }
+        .feedback {
+            margin-top: 18px;
+            padding: 16px 20px;
+            border-radius: 16px;
+            background: #f5f9ff;
+            border: 1px solid #e0ebf7;
+            display: none;
+            animation: fadeSlide 0.3s ease;
+        }
+        .feedback.show { display: block; }
+        @keyframes fadeSlide {
+            0% { opacity: 0; transform: translateY(-8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .feedback .result {
+            font-size: 17px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .feedback .result .icon { font-size: 24px; }
+        .feedback .result.correct-text { color: #0f9d58; }
+        .feedback .result.wrong-text { color: #d93025; }
+        .feedback .explanation {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #1a3c5e;
+            background: #fff;
+            padding: 12px 18px;
+            border-radius: 12px;
+            border-left: 4px solid #2b7be4;
+            margin-top: 4px;
+        }
+        .feedback .explanation strong { color: #0b2a4a; }
+        .feedback .explanation .highlight-answer {
+            background: #fef6d9;
+            padding: 0 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .empty-tab {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6a8aaa;
+            background: #ffffffd0;
+            border-radius: 24px;
+            border: 2px dashed #d6e4f2;
+        }
+
+        /* ===== 教师后台模态框 ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.25s ease;
+        }
+        .modal-overlay.open { display: flex; }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .modal-box {
+            background: #fff;
+            border-radius: 32px;
+            max-width: 700px;
+            width: 94%;
+            max-height: 85vh;
+            padding: 28px 32px 32px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-box .close-btn {
+            position: absolute;
+            top: 18px; right: 24px;
+            font-size: 28px;
+            font-weight: 300;
+            color: #6a8aaa;
+            cursor: pointer;
+            transition: color 0.15s;
+            background: none;
+            border: none;
+            line-height: 1;
+        }
+        .modal-box .close-btn:hover { color: #1a2a3a; }
+        .modal-box h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0b2a4a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .modal-box h2 small {
+            font-weight: 400;
+            font-size: 14px;
+            color: #6a8aaa;
+        }
+        .modal-box .refresh-btn {
+            background: #eef5fe;
+            border: 1px solid #b6d0ea;
+            border-radius: 30px;
+            padding: 4px 18px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #1a5bbf;
+            cursor: pointer;
+            transition: 0.15s;
+            margin-left: 12px;
+        }
+        .modal-box .refresh-btn:hover {
+            background: #1a5bbf;
+            color: #fff;
+            border-color: #1a5bbf;
+        }
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: 15px;
+        }
+        .stats-table th {
+            text-align: left;
+            background: #f0f7ff;
+            padding: 10px 14px;
+            border-radius: 12px 12px 0 0;
+            font-weight: 600;
+            color: #1a3c5e;
+        }
+        .stats-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e9f0f9;
+        }
+        .stats-table tr:last-child td { border-bottom: none; }
+        .stats-table .rate-col {
+            font-weight: 600;
+            color: #1a5bbf;
+        }
+        .stats-table .no-data {
+            text-align: center;
+            color: #8aacd0;
+            padding: 30px 0;
+        }
+        .modal-box .teacher-tip {
+            margin-top: 16px;
+            font-size: 14px;
+            color: #6a8aaa;
+            background: #f5f9ff;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1px dashed #d6e4f2;
+        }
+
+        @media (max-width: 700px) {
+            .header { padding: 18px; }
+            .header h1 { font-size: 21px; }
+            .stats { font-size: 13px; gap: 10px 14px; }
+            .stats .stat-item { padding: 4px 12px; }
+            .tabs { padding: 8px 12px; justify-content: center; }
+            .tab-btn { font-size: 14px; padding: 6px 16px; }
+            .q-card { padding: 18px 16px; }
+            .q-number { font-size: 16px; line-height: 30px; }
+            .q-body { font-size: 15px; }
+            .options label { font-size: 14px; padding: 4px 12px; }
+            .fill-input input[type="text"] { width: 90px; font-size: 15px; padding: 6px 10px; }
+            .essay-inputs .pair input[type="text"] { width: 80px; font-size: 15px; }
+            .btn-submit { font-size: 14px; padding: 8px 24px; }
+            .group-info .label { font-size: 15px; }
+            .btn-next { font-size: 14px; padding: 6px 20px; }
+            #groupResult .result-row .title { font-size: 17px; }
+            #groupResult .result-row .rate { font-size: 20px; padding: 0 14px; }
+            .student-area .id-display { font-size: 16px; }
+            .modal-box { padding: 20px; }
+            .modal-box h2 { font-size: 20px; }
+            .stats-table { font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 头部 -->
+    <header class="header">
+        <div class="header-top">
+            <h1>📐 长方体 &amp; 正方体 <span>无限分组</span></h1>
+            <div class="student-area" id="studentArea">
+                <span class="label">👤 学号</span>
+                <span class="id-display" id="studentIdDisplay">未登录</span>
+                <button id="switchStudentBtn">切换</button>
+                <button id="teacherDashboardBtn">📊 教师后台</button>
+            </div>
+        </div>
+        <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+            <div class="stats" id="statsBar">
+                <span class="stat-item">📝 本组 <span class="num" id="totalCount">0</span></span>
+                <span class="stat-item">✅ 已做 <span class="num purple" id="doneCount">0</span></span>
+                <span class="stat-item">🎯 正确 <span class="num green" id="correctCount">0</span></span>
+                <span class="stat-item">📊 正确率 <span class="num orange" id="rateDisplay">0%</span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 难度 Tabs -->
+    <nav class="tabs" id="tabContainer">
+        <button class="tab-btn active" data-level="all">🌟 全部（混合）</button>
+        <button class="tab-btn" data-level="base">📘 基础</button>
+        <button class="tab-btn" data-level="medium">📙 中等</button>
+        <button class="tab-btn" data-level="hard">📕 提高</button>
+    </nav>
+
+    <!-- 组信息 & 下一组 -->
+    <div class="group-info">
+        <div class="label">📌 第 <span id="groupNumber">1</span> 组 · 共 5 题</div>
+        <button class="btn-next" id="nextGroupBtn">⟳ 换一组</button>
+    </div>
+
+    <!-- 组结果横幅 -->
+    <div id="groupResult">
+        <div class="result-row">
+            <span class="title">📊 本组完成！</span>
+            <span class="rate" id="groupRate">0% (0/5)</span>
+        </div>
+        <div class="comment" id="groupComment">
+            <span class="emoji">😊</span> 继续加油！
+        </div>
+    </div>
+
+    <!-- 题目列表 -->
+    <div class="question-list" id="questionList"></div>
+</div>
+
+<!-- ===== 教师后台模态框 ===== -->
+<div class="modal-overlay" id="teacherModal">
+    <div class="modal-box">
+        <button class="close-btn" id="closeModalBtn">&times;</button>
+        <h2>📊 教师后台 <small>（本地记录）</small>
+            <button class="refresh-btn" id="refreshStatsBtn">⟳ 刷新</button>
+        </h2>
+        <div id="statsTableContainer">
+            <table class="stats-table" id="statsTable">
+                <thead>
+                    <tr><th>学号</th><th>总答题数</th><th>正确数</th><th>正确率</th></tr>
+                </thead>
+                <tbody id="statsBody">
+                    <tr><td colspan="4" class="no-data">暂无数据</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="teacher-tip">💡 数据保存在本地浏览器，仅用于演示。切换学号可记录不同学生的练习情况。</div>
+    </div>
+</div>
+
+<script>
+    // ================================================================
+    //  学号管理 & 存储
+    // ================================================================
+
+    const STORAGE_KEY = 'math_group_records';
+
+    function getRecords() {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+            try { return JSON.parse(raw); } catch(e) { return {}; }
+        }
+        return {};
+    }
+
+    function saveRecords(records) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    }
+
+    function getStudentId() {
+        return localStorage.getItem('math_student_id') || null;
+    }
+
+    function setStudentId(id) {
+        if (id && id.trim()) {
+            localStorage.setItem('math_student_id', id.trim());
+        } else {
+            localStorage.removeItem('math_student_id');
+        }
+    }
+
+    // 更新某个学号的记录（总答题数+1，正确则正确数+1）
+    function updateStudentRecord(studentId, isCorrect) {
+        if (!studentId) return;
+        const records = getRecords();
+        if (!records[studentId]) {
+            records[studentId] = { total: 0, correct: 0 };
+        }
+        records[studentId].total += 1;
+        if (isCorrect) records[studentId].correct += 1;
+        saveRecords(records);
+    }
+
+    // 获取学号的统计
+    function getStudentStats(studentId) {
+        const records = getRecords();
+        return records[studentId] || { total: 0, correct: 0 };
+    }
+
+    // ================================================================
+    //  题目生成器（与之前相同，略作调整）
+    // ================================================================
+
+    function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+    function getRange(level) {
+        if (level === 'base') return { min: 2, max: 8 };
+        if (level === 'medium') return { min: 4, max: 15 };
+        return { min: 6, max: 25 };
+    }
+
+    function generateFillSurface(level) {
+        const r = getRange(level);
+        const l = randomInt(r.min, r.max);
+        const w = randomInt(r.min, r.max);
+        const h = randomInt(r.min, r.max);
+        const surface = 2 * (l * w + w * h + h * l);
+        const answer = String(surface);
+        const unit = 'cm²';
+        const question = `一个长方体长 <strong>${l} cm</strong>，宽 <strong>${w} cm</strong>，高 <strong>${h} cm</strong>，它的表面积是（　）cm²。`;
+        const explanation = `表面积 = 2×(长×宽 + 宽×高 + 高×长) = 2×(${l}×${w} + ${w}×${h} + ${h}×${l}) = 2×(${l*w} + ${w*h} + ${h*l}) = 2×${l*w + w*h + h*l} = <strong>${surface}</strong> cm²。<br>💡 注意不要漏乘 2，也不要把侧面积当成表面积。`;
+        return { type: 'fill', level, question, answer, unit, explanation };
+    }
+    function generateFillVolume(level) {
+        const r = getRange(level);
+        const a = randomInt(r.min, r.max);
+        const volume = a * a * a;
+        const answer = String(volume);
+        const unit = 'cm³';
+        const question = `一个正方体的棱长是 <strong>${a} cm</strong>，它的体积是（　）cm³。`;
+        const explanation = `体积 = 棱长³ = ${a}³ = ${a}×${a}×${a} = <strong>${volume}</strong> cm³。<br>💡 注意体积单位是立方，表面积是平方。`;
+        return { type: 'fill', level, question, answer, unit, explanation };
+    }
+    function generateFillLateral(level) {
+        const r = getRange(level);
+        const l = randomInt(r.min, r.max);
+        const w = randomInt(r.min, r.max);
+        const h = randomInt(r.min, r.max);
+        const lateral = 2 * (l * h + w * h);
+        const answer = String(lateral);
+        const unit = 'cm²';
+        const question = `一个长方体长 <strong>${l} cm</strong>，宽 <strong>${w} cm</strong>，高 <strong>${h} cm</strong>，它的侧面积（四个侧面）是（　）cm²。`;
+        const explanation = `侧面积 = 2×(长×高 + 宽×高) = 2×(${l}×${h} + ${w}×${h}) = 2×(${l*h} + ${w*h}) = 2×${l*h + w*h} = <strong>${lateral}</strong> cm²。<br>💡 侧面积不包括上、下两个底面。`;
+        return { type: 'fill', level, question, answer, unit, explanation };
+    }
+    function generateChoice(level) {
+        const r = getRange(level);
+        const l = randomInt(r.min, r.max);
+        const w = randomInt(r.min, r.max);
+        const h = randomInt(r.min, r.max);
+        const correct = 2 * (l * w + w * h + h * l);
+        const wrong1 = l * w + w * h + h * l;
+        const wrong2 = 2 * (l * h + w * h);
+        const wrong3 = l * w + 2 * (l * h + w * h);
+        const labels = ['A', 'B', 'C', 'D'];
+        const correctIndex = randomInt(0, 3);
+        const shuffled = [];
+        const errs = [wrong1, wrong2, wrong3];
+        for (let i = 0; i < 4; i++) {
+            if (i === correctIndex) shuffled.push(correct);
+            else shuffled.push(errs.pop());
+        }
+        const options = labels.map((label, idx) => {
+            const val = shuffled[idx];
+            let display;
+            if (val === correct) display = `2×(${l}×${w} + ${w}×${h} + ${h}×${l})`;
+            else if (val === wrong1) display = `${l}×${w} + ${w}×${h} + ${h}×${l}`;
+            else if (val === wrong2) display = `2×(${l}×${h} + ${w}×${h})`;
+            else display = `${l}×${w} + 2×(${l}×${h} + ${w}×${h})`;
+            return `${label}. ${display}`;
+        });
+        const answer = labels[correctIndex];
+        const question = `一个长方体长 <strong>${l} cm</strong>，宽 <strong>${w} cm</strong>，高 <strong>${h} cm</strong>，下面哪个算式 <strong>正确</strong> 计算了它的表面积？`;
+        const explanation = `表面积 = 2×(长×宽 + 宽×高 + 高×长) = 2×(${l}×${w} + ${w}×${h} + ${h}×${l}) = <strong>${correct}</strong> cm²。<br>
+        选项 A 正确。其他选项的错误：<br>
+        B 漏乘了 2；<br>
+        C 只算了侧面积；<br>
+        D 只加了一个底面积。`;
+        return { type: 'choice', level, question, options, answer, explanation };
+    }
+    function generateEssay(level) {
+        const r = getRange(level);
+        const L = randomInt(r.min + 2, r.max + 4);
+        const W = randomInt(r.min + 2, r.max + 4);
+        const H = randomInt(r.min + 1, r.max + 3);
+        const a = randomInt(2, Math.min(L, W, H) - 1);
+        const volCube = a * a * a;
+        const volBox = L * W * H;
+        const totalVol = volCube + volBox;
+        const surfCube = 6 * a * a;
+        const surfBox = 2 * (L * W + W * H + H * L);
+        const contact = a * a;
+        const totalSurf = surfCube + surfBox - 2 * contact;
+
+        const question = `一个棱长 <strong>${a} cm</strong> 的正方体放在一个长 <strong>${L} cm</strong>、宽 <strong>${W} cm</strong>、高 <strong>${H} cm</strong> 的长方体上面（正方体底面完全贴合在长方体上表面），求这个组合图形的 <strong>表面积</strong> 和 <strong>体积</strong>。`;
+        const answer = { surface: String(totalSurf), volume: String(totalVol) };
+        const explanation = `
+        📐 <strong>体积</strong> = 正方体体积 + 长方体体积 = ${a}³ + ${L}×${W}×${H} = ${volCube} + ${volBox} = <strong>${totalVol}</strong> cm³。<br>
+        📐 <strong>表面积</strong> = 正方体表面积 + 长方体表面积 − 2×接触面面积<br>
+        &nbsp;&nbsp;正方体表面积 = 6×${a}² = ${surfCube} cm²<br>
+        &nbsp;&nbsp;长方体表面积 = 2×(${L}×${W} + ${W}×${H} + ${H}×${L}) = 2×(${L*W} + ${W*H} + ${H*L}) = ${surfBox} cm²<br>
+        &nbsp;&nbsp;接触面 = ${a}×${a} = ${contact} cm²（被遮挡，需减去两次）<br>
+        &nbsp;&nbsp;表面积 = ${surfCube} + ${surfBox} − 2×${contact} = ${surfCube + surfBox - 2*contact} = <strong>${totalSurf}</strong> cm²。<br>
+        💡 注意：接触面在内部，计算表面积时要减去两个接触面。
+        `;
+        return { type: 'essay', level, question, answer, explanation };
+    }
+
+    function generateOneQuestion(level) {
+        const pool = level === 'base' ? ['fillSurface','fillVolume','fillLateral','choice'] :
+                     level === 'medium' ? ['fillSurface','fillVolume','fillLateral','choice','essay'] :
+                     ['fillSurface','fillVolume','fillLateral','choice','essay','essay'];
+        const chosen = pool[randomInt(0, pool.length - 1)];
+        switch (chosen) {
+            case 'fillSurface': return generateFillSurface(level);
+            case 'fillVolume': return generateFillVolume(level);
+            case 'fillLateral': return generateFillLateral(level);
+            case 'choice': return generateChoice(level);
+            case 'essay': return generateEssay(level);
+            default: return generateFillSurface(level);
+        }
+    }
+
+    function generateGroup(levelMode) {
+        let levels = [];
+        if (levelMode === 'all') {
+            const baseCount = 2, mediumCount = 2, hardCount = 1;
+            for (let i = 0; i < baseCount; i++) levels.push('base');
+            for (let i = 0; i < mediumCount; i++) levels.push('medium');
+            for (let i = 0; i < hardCount; i++) levels.push('hard');
+            shuffleArray(levels);
+        } else {
+            for (let i = 0; i < 5; i++) levels.push(levelMode);
+        }
+        const questions = levels.map((level, idx) => {
+            const q = generateOneQuestion(level);
+            q.id = `g${Date.now()}_${idx}`;
+            q.index = idx + 1;
+            return q;
+        });
+        return questions;
+    }
+
+    // ================================================================
+    //  状态管理
+    // ================================================================
+
+    let currentGroup = [];
+    let groupNumber = 1;
+    let currentLevel = 'all';
+    const state = {};
+
+    // ================================================================
+    //  DOM 引用
+    // ================================================================
+
+    const questionListEl = document.getElementById('questionList');
+    const totalCountEl = document.getElementById('totalCount');
+    const doneCountEl = document.getElementById('doneCount');
+    const correctCountEl = document.getElementById('correctCount');
+    const rateDisplayEl = document.getElementById('rateDisplay');
+    const groupNumberEl = document.getElementById('groupNumber');
+    const nextGroupBtn = document.getElementById('nextGroupBtn');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const groupResultEl = document.getElementById('groupResult');
+    const groupRateEl = document.getElementById('groupRate');
+    const groupCommentEl = document.getElementById('groupComment');
+
+    const studentIdDisplay = document.getElementById('studentIdDisplay');
+    const switchStudentBtn = document.getElementById('switchStudentBtn');
+    const teacherDashboardBtn = document.getElementById('teacherDashboardBtn');
+    const teacherModal = document.getElementById('teacherModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const refreshStatsBtn = document.getElementById('refreshStatsBtn');
+    const statsBody = document.getElementById('statsBody');
+
+    // ================================================================
+    //  学号相关 UI
+    // ================================================================
+
+    function updateStudentDisplay() {
+        const id = getStudentId();
+        if (id) {
+            studentIdDisplay.textContent = id;
+        } else {
+            studentIdDisplay.textContent = '未登录';
+        }
+    }
+
+    function promptStudentId() {
+        const current = getStudentId() || '';
+        const input = prompt('请输入你的学号（例如：2024001）：', current);
+        if (input !== null) {
+            const trimmed = input.trim();
+            if (trimmed) {
+                setStudentId(trimmed);
+                updateStudentDisplay();
+                // 刷新统计显示（本组统计不变，但后台数据更新）
+                renderGroup(); // 重绘以更新状态（但不需要重绘题目，只是刷新显示）
+                // 如果模态框打开则刷新后台
+                if (teacherModal.classList.contains('open')) {
+                    renderTeacherStats();
+                }
+            } else {
+                alert('学号不能为空！');
+                // 递归提示直到输入
+                promptStudentId();
+            }
+        }
+    }
+
+    // ================================================================
+    //  更新统计 & 组结果
+    // ================================================================
+
+    function updateStats() {
+        const total = currentGroup.length;
+        let done = 0, correct = 0;
+        currentGroup.forEach(q => {
+            const s = state[q.id];
+            if (s && s.submitted) {
+                done++;
+                if (s.correct) correct++;
+            }
+        });
+        const rate = done === 0 ? 0 : Math.round((correct / done) * 100);
+        totalCountEl.textContent = total;
+        doneCountEl.textContent = done;
+        correctCountEl.textContent = correct;
+        rateDisplayEl.textContent = rate + '%';
+        groupNumberEl.textContent = groupNumber;
+        return { done, correct, rate };
+    }
+
+    function showGroupResult() {
+        const total = currentGroup.length;
+        let done = 0, correct = 0;
+        currentGroup.forEach(q => {
+            const s = state[q.id];
+            if (s && s.submitted) {
+                done++;
+                if (s.correct) correct++;
+            }
+        });
+        if (done === total && total > 0) {
+            const rate = Math.round((correct / total) * 100);
+            groupRateEl.textContent = `${rate}% (${correct}/${total})`;
+
+            let emoji, comment;
+            if (rate === 100) {
+                emoji = '🎉';
+                comment = '完美！全部正确！继续挑战下一组吧！';
+            } else if (rate >= 80) {
+                emoji = '👍';
+                comment = '很不错！再接再厉，保持状态！';
+            } else if (rate >= 60) {
+                emoji = '📚';
+                comment = '基本掌握，建议复习错题，巩固知识。';
+            } else {
+                emoji = '😅';
+                comment = '别灰心，学习是一个过程！建议先在学习模式中熟悉几何体的特征。';
+            }
+            groupCommentEl.innerHTML = `<span class="emoji">${emoji}</span> ${comment}`;
+            groupResultEl.style.display = 'block';
+            setTimeout(() => {
+                groupResultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 200);
+        } else {
+            groupResultEl.style.display = 'none';
+        }
+    }
+
+    // ================================================================
+    //  渲染当前组
+    // ================================================================
+
+    function renderGroup() {
+        if (currentGroup.length === 0) {
+            questionListEl.innerHTML = `<div class="empty-tab">✨ 点击「换一组」开始练习</div>`;
+            updateStats();
+            groupResultEl.style.display = 'none';
+            return;
+        }
+
+        let html = '';
+        currentGroup.forEach((q, idx) => {
+            const s = state[q.id] || { submitted: false, correct: false, userAnswer: null };
+            const isDone = s.submitted;
+            const isCorrect = s.correct;
+
+            let cardClass = 'q-card';
+            if (isDone) {
+                cardClass += isCorrect ? ' correct' : ' wrong';
+            }
+
+            let controlsHtml = '';
+            if (q.type === 'choice') {
+                controlsHtml = `
+                    <div class="options">
+                        ${q.options.map((opt, oi) => {
+                            const letter = String.fromCharCode(65 + oi);
+                            const checked = (isDone && s.userAnswer === letter) ? 'checked' : '';
+                            const disabled = isDone ? 'disabled' : '';
+                            return `<label>
+                                <input type="radio" name="q${q.id}" value="${letter}" ${checked} ${disabled}>
+                                ${opt}
+                            </label>`;
+                        }).join('')}
+                    </div>
+                    <button class="btn-submit" data-id="${q.id}" ${isDone ? 'disabled' : ''}>
+                        ${isDone ? '✅ 已提交' : '📤 提交'}
+                    </button>
+                `;
+            } else if (q.type === 'fill') {
+                const val = isDone ? (s.userAnswer || '') : '';
+                controlsHtml = `
+                    <div class="fill-input">
+                        <input type="text" id="input_${q.id}" value="${val}" placeholder="输入答案" ${isDone ? 'disabled' : ''}>
+                        <span class="unit">${q.unit || ''}</span>
+                        <button class="btn-submit" data-id="${q.id}" ${isDone ? 'disabled' : ''}>
+                            ${isDone ? '✅ 已提交' : '📤 提交'}
+                        </button>
+                    </div>
+                `;
+            } else if (q.type === 'essay') {
+                const sv = isDone ? (s.userAnswer?.surface || '') : '';
+                const vv = isDone ? (s.userAnswer?.volume || '') : '';
+                controlsHtml = `
+                    <div class="essay-inputs">
+                        <div class="pair">
+                            <label>表面积</label>
+                            <input type="text" id="surface_${q.id}" value="${sv}" placeholder="如 344" ${isDone ? 'disabled' : ''}>
+                            <span class="unit">cm²</span>
+                        </div>
+                        <div class="pair">
+                            <label>体积</label>
+                            <input type="text" id="volume_${q.id}" value="${vv}" placeholder="如 364" ${isDone ? 'disabled' : ''}>
+                            <span class="unit">cm³</span>
+                        </div>
+                        <button class="btn-submit" data-id="${q.id}" ${isDone ? 'disabled' : ''}>
+                            ${isDone ? '✅ 已提交' : '📤 提交'}
+                        </button>
+                    </div>
+                `;
+            }
+
+            let feedbackHtml = '';
+            if (isDone) {
+                const resultText = isCorrect ? '✅ 回答正确！' : '❌ 回答错误';
+                const resultClass = isCorrect ? 'correct-text' : 'wrong-text';
+                let userDisplay = '';
+                if (q.type === 'choice') {
+                    const opt = q.options.find(o => o.startsWith(s.userAnswer + '.'));
+                    userDisplay = opt || s.userAnswer;
+                } else if (q.type === 'fill') {
+                    userDisplay = s.userAnswer + (q.unit ? ' ' + q.unit : '');
+                } else if (q.type === 'essay') {
+                    userDisplay = '表面积 = ' + s.userAnswer.surface + ' cm²，体积 = ' + s.userAnswer.volume + ' cm³';
+                }
+                let correctDisplay = '';
+                if (q.type === 'choice') {
+                    const opt = q.options.find(o => o.startsWith(q.answer + '.'));
+                    correctDisplay = opt || q.answer;
+                } else if (q.type === 'fill') {
+                    correctDisplay = q.answer + (q.unit ? ' ' + q.unit : '');
+                } else if (q.type === 'essay') {
+                    correctDisplay = '表面积 = ' + q.answer.surface + ' cm²，体积 = ' + q.answer.volume + ' cm³';
+                }
+                const userPart = isCorrect ? '' : `<br>你的答案：<span class="highlight-answer">${userDisplay}</span><br>正确答案：<span class="highlight-answer">${correctDisplay}</span><br>`;
+                feedbackHtml = `
+                    <div class="feedback show">
+                        <div class="result ${resultClass}">
+                            <span class="icon">${isCorrect ? '🎉' : '😅'}</span> ${resultText}
+                        </div>
+                        <div class="explanation">
+                            ${userPart}
+                            <strong>📖 错因分析：</strong><br>${q.explanation}
+                        </div>
+                    </div>
+                `;
+            } else {
+                feedbackHtml = `<div class="feedback" id="feedback_${q.id}"></div>`;
+            }
+
+            const levelColor = { 'base': 'base', 'medium': 'medium', 'hard': 'hard' } [q.level] || 'base';
+            const levelLabel = { 'base': '基础', 'medium': '中等', 'hard': '提高' } [q.level] || '';
+
+            html += `
+                <div class="${cardClass}" id="card_${q.id}">
+                    <div class="q-header">
+                        <span class="q-number">#${idx+1}</span>
+                        <span class="q-difficulty ${levelColor}">${levelLabel}</span>
+                        <span class="q-status">
+                            ${isDone ? (isCorrect ? '✅ 正确' : '❌ 需订正') : '⏳ 待完成'}
+                        </span>
+                    </div>
+                    <div class="q-body">${q.question}</div>
+                    <div class="q-controls" id="controls_${q.id}">
+                        ${controlsHtml}
+                    </div>
+                    ${feedbackHtml}
+                </div>
+            `;
+        });
+
+        questionListEl.innerHTML = html;
+
+        // 绑定提交事件
+        document.querySelectorAll('.btn-submit[data-id]').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const id = this.dataset.id;
+                handleSubmit(id);
+            });
+        });
+
+        // 回车支持
+        document.querySelectorAll('.fill-input input[type="text"]').forEach(inp => {
+            inp.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    const card = this.closest('.q-card');
+                    const btn = card?.querySelector('.btn-submit');
+                    if (btn && !btn.disabled) btn.click();
+                }
+            });
+        });
+        document.querySelectorAll('.essay-inputs input[type="text"]').forEach(inp => {
+            inp.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    const card = this.closest('.q-card');
+                    const btn = card?.querySelector('.btn-submit');
+                    if (btn && !btn.disabled) btn.click();
+                }
+            });
+        });
+
+        updateStats();
+        showGroupResult();
+    }
+
+    // ================================================================
+    //  提交逻辑（含记录更新）
+    // ================================================================
+
+    function handleSubmit(id) {
+        const q = currentGroup.find(d => d.id === id);
+        if (!q) return;
+        const s = state[id];
+        if (!s) return;
+        if (s.submitted) return;
+
+        // 检查学号
+        const studentId = getStudentId();
+        if (!studentId) {
+            alert('请先设置学号！（点击右上角“切换”按钮）');
+            return;
+        }
+
+        let userAnswer = null;
+        let isValid = false;
+
+        if (q.type === 'choice') {
+            const radios = document.querySelectorAll(`input[name="q${id}"]`);
+            let selected = null;
+            radios.forEach(r => { if (r.checked) selected = r.value; });
+            if (selected) {
+                userAnswer = selected;
+                isValid = true;
+            } else {
+                alert('请先选择一个选项！');
+                return;
+            }
+        } else if (q.type === 'fill') {
+            const inp = document.getElementById(`input_${id}`);
+            if (inp) {
+                const val = inp.value.trim();
+                if (val === '') {
+                    alert('请填写答案！');
+                    return;
+                }
+                userAnswer = val;
+                isValid = true;
+            }
+        } else if (q.type === 'essay') {
+            const surfaceInp = document.getElementById(`surface_${id}`);
+            const volumeInp = document.getElementById(`volume_${id}`);
+            if (surfaceInp && volumeInp) {
+                const sv = surfaceInp.value.trim();
+                const vv = volumeInp.value.trim();
+                if (sv === '' || vv === '') {
+                    alert('请同时填写表面积和体积！');
+                    return;
+                }
+                userAnswer = { surface: sv, volume: vv };
+                isValid = true;
+            }
+        }
+
+        if (!isValid || userAnswer === null) return;
+
+        let correct = false;
+        if (q.type === 'choice') {
+            correct = (userAnswer === q.answer);
+        } else if (q.type === 'fill') {
+            correct = (userAnswer.trim() === q.answer.trim());
+        } else if (q.type === 'essay') {
+            correct = (userAnswer.surface.trim() === q.answer.surface.trim() &&
+                       userAnswer.volume.trim() === q.answer.volume.trim());
+        }
+
+        s.submitted = true;
+        s.correct = correct;
+        s.userAnswer = userAnswer;
+
+        // 更新学生记录
+        updateStudentRecord(studentId, correct);
+
+        renderGroup();
+        // 滚动到该题
+        const card = document.getElementById(`card_${id}`);
+        if (card) {
+            setTimeout(() => {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
+    }
+
+    // ================================================================
+    //  生成新组
+    // ================================================================
+
+    function loadNewGroup() {
+        const newQuestions = generateGroup(currentLevel);
+        currentGroup = newQuestions;
+        currentGroup.forEach(q => {
+            state[q.id] = { submitted: false, correct: false, userAnswer: null };
+        });
+        groupNumber++;
+        groupResultEl.style.display = 'none';
+        renderGroup();
+    }
+
+    // ================================================================
+    //  教师后台渲染
+    // ================================================================
+
+    function renderTeacherStats() {
+        const records = getRecords();
+        const ids = Object.keys(records);
+        if (ids.length === 0) {
+            statsBody.innerHTML = `<tr><td colspan="4" class="no-data">暂无学生数据</td></tr>`;
+            return;
+        }
+        // 按学号排序
+        ids.sort();
+        let html = '';
+        ids.forEach(id => {
+            const stat = records[id];
+            const rate = stat.total === 0 ? 0 : Math.round((stat.correct / stat.total) * 100);
+            html += `<tr>
+                <td><strong>${id}</strong></td>
+                <td>${stat.total}</td>
+                <td>${stat.correct}</td>
+                <td class="rate-col">${rate}%</td>
+            </tr>`;
+        });
+        statsBody.innerHTML = html;
+    }
+
+    function openTeacherModal() {
+        teacherModal.classList.add('open');
+        renderTeacherStats();
+    }
+
+    function closeTeacherModal() {
+        teacherModal.classList.remove('open');
+    }
+
+    // ================================================================
+    //  事件绑定
+    // ================================================================
+
+    // 切换学号
+    switchStudentBtn.addEventListener('click', function() {
+        promptStudentId();
+    });
+
+    // 教师后台
+    teacherDashboardBtn.addEventListener('click', openTeacherModal);
+    closeModalBtn.addEventListener('click', closeTeacherModal);
+    // 点击遮罩关闭
+    teacherModal.addEventListener('click', function(e) {
+        if (e.target === this) closeTeacherModal();
+    });
+    // 刷新按钮
+    refreshStatsBtn.addEventListener('click', function() {
+        renderTeacherStats();
+    });
+
+    // 难度切换
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentLevel = this.dataset.level;
+            groupNumber = 1;
+            loadNewGroup();
+        });
+    });
+
+    // 下一组
+    nextGroupBtn.addEventListener('click', loadNewGroup);
+
+    // ================================================================
+    //  初始化
+    // ================================================================
+
+    // 检查学号，若无则提示
+    (function init() {
+        const id = getStudentId();
+        if (!id) {
+            // 首次访问，弹出输入框
+            setTimeout(() => {
+                promptStudentId();
+            }, 300);
+        } else {
+            updateStudentDisplay();
+        }
+        loadNewGroup();
+    })();
+</script>
+</body>
+</html>
